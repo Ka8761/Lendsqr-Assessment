@@ -9,7 +9,7 @@ import savingsUsersIcon from '../../assets/savings.png';
 
 import './Dashboard.css';
 
-const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
+const API_USERS = 'https://47162d2b44164d148856160628d20b2e.api.mockbin.io/';
 
 function Dashboard() {
   const [users, setUsers] = useState([]);
@@ -115,7 +115,7 @@ function Dashboard() {
                 {users.slice(0, 10).map((user) => (
                   <tr key={user.id}>
                     <td>{user.organization || 'N/A'}</td>
-                    <td>{user.username || 'N/A'}</td>
+                    <td>{user.firstname || 'N/A'}</td>
                     <td>{user.email || 'N/A'}</td>
                     <td>{user.phoneNumber || 'N/A'}</td>
                     <td>{user.dateJoined || 'N/A'}</td>
