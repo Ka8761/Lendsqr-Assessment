@@ -7,10 +7,11 @@ import './Dashboard.css';
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
 const ITEMS_PER_PAGE = 20;
 
-function Users() {
+function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFilter, setShowFilter] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -68,7 +69,7 @@ function Users() {
   return (
     <div className="users-page">
       <StatCard/>
-      
+
       <h1>Users</h1>
 
       <div className="table-wrapper">
@@ -185,4 +186,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default Dashboard;

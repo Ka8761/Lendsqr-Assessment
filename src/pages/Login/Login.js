@@ -1,50 +1,67 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
+import imagebanner from "../../assets/images/loginimage.png";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('authToken', 'fake-jwt-token');
-    navigate('/dashboard');
+    localStorage.setItem("authToken", "fake-jwt-token");
+    navigate("/dashboard");
   };
 
   return (
     <div className="login-page">
-      <div className="login-container">
-        <h1>Lendsqr</h1>
-        <h2>Welcome!</h2>
-        <p>Enter details to login.</p>
+      {/* LEFT IMAGE SECTION */}
+      <div className="login-image-section">
+        <img
+          src={imagebanner}
+          alt="Login Banner"
+          className="login-image"
+        />
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="adeleke@gmail.com"
-              required
-            />
-          </div>
+      {/* RIGHT FORM SECTION */}
+      <div className="login-form-section">
+        {/* LOGO */}
+        <div className="logo">
+          <img src="/images/logo.png" alt="Lendsqr Logo" />
+        </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
-              required
-            />
-          </div>
+        <div className="form-wrapper">
+          <h1 className="welcome-text">Welcome!</h1>
+          <p className="subtitle">Enter details to login.</p>
 
-          <button type="submit" className="login-btn">LOG IN</button>
-        </form>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="login-btn">
+              LOG IN
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
