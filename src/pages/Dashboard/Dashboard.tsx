@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-icons/fi';
 import StatCard from '../../components/StatCard/StatCard';
-import FilterPopover from '../../components/FilterContainer/FilterContainer';
 import './Dashboard.scss';
+import FilterContainer from '../../components/FilterContainer/FilterContainer';
 
 const API_USERS = 'https://b153a15f478d47af8acfb424fb0da442.api.mockbin.io/';
 const ITEMS_PER_PAGE = 20;
@@ -214,7 +214,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {showFilter && (
-        <FilterPopover
+        <FilterContainer
           onClose={() => setShowFilter(false)}
           onFilter={(newFilters: Filters) => {
             setFilters(newFilters);
