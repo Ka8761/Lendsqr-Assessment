@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-icons/fi';
 import StatCard from '../../components/StatCard/StatCard';
-import FilterPopover from '../../components/FilterContainer/FilterContainer.js';
+import FilterContainer from '../../components/FilterContainer/FilterContainer';
 import './Dashboard.css';
 
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
@@ -162,7 +162,7 @@ function Dashboard() {
       </div>
 
       {showFilter && (
-        <FilterPopover
+        <FilterContainer
           onClose={() => setShowFilter(false)}
           onFilter={(newFilters) => {
             setFilters(newFilters);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import imagebanner from "../../assets/loginimage.png";
+import logo from "../../assets/mainlogo.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,10 @@ function Login() {
 
   return (
     <div className="login-page">
-      {/* LEFT IMAGE SECTION */}
+        <div className="logo">
+          <img src={logo} alt="Lendsqr Logo" />
+        </div>
+  
       <div className="login-image-section">
         <img
           src={imagebanner}
@@ -25,12 +29,9 @@ function Login() {
         />
       </div>
 
-      {/* RIGHT FORM SECTION */}
+
       <div className="login-form-section">
-        {/* LOGO */}
-        <div className="logo">
-          <img src="/images/logo.png" alt="Lendsqr Logo" />
-        </div>
+    
 
         <div className="form-wrapper">
           <h1 className="welcome-text">Welcome!</h1>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FiCalendar } from 'react-icons/fi';
 import './FilterContainer.css';
 
-function FilterPopover({ onClose, onFilter, organizations }) {
+function FilterContainer({ onClose, onFilter, organizations }) {
   const [organization, setOrganization] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -85,4 +85,4 @@ function FilterPopover({ onClose, onFilter, organizations }) {
   );
 }
 
-export default FilterPopover;
+export default FilterContainer;

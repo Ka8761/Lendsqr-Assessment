@@ -1,13 +1,13 @@
 .filter-popover {
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 80%;
+  left: 30;
   background: white;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   width: 320px;
-  z-index: 200;
+  z-index: 2;
   margin-top: 8px;
 }
 
