@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import Sidebar from '../Sidebar/Sidebar';
 import './Layout.css';
 
 function Layout() {
@@ -11,24 +12,12 @@ function Layout() {
   };
 
   return (
-    <div className="layout">
-      <header className="header">
-        <div className="logo">Lendsqr</div>
-        <div className="user-area">
-          <span>Adeyemi</span>
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
-        </div>
-      </header>
+    <div className="app-layout">
+      <Navbar onLogout={handleLogout} />
 
-      <div className="main-container">
-        <aside className="sidebar">
-          <ul>
-            <li><Link to="/dashboard">Dashboard</Link></li>
-            <li><Link to="/users">Users</Link></li>
-          </ul>
-        </aside>
-
-        <main className="content">
+      <div className="main-area">
+        <Sidebar />
+        <main className="content-area">
           <Outlet />
         </main>
       </div>

@@ -1,90 +1,30 @@
-.layout {
+.app-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.header {
-  background: #39cd62;
-  color: white;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.user-area {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.logout-btn {
-  background: white;
-  color: #39cd62;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.main-container {
+.main-area {
   display: flex;
   flex: 1;
 }
 
-.sidebar {
-  width: 240px;
-  background: white;
-  border-right: 1px solid #eee;
-  padding: 24px 16px;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  margin: 16px 0;
-}
-
-.sidebar a {
-  font-size: 16px;
-  color: #64748b;
-  display: block;
-  padding: 8px 12px;
-  border-radius: 6px;
-}
-
-.sidebar a:hover,
-.sidebar a.active {
-  background: #f1f5f9;
-  color: #0f172a;
-}
-
-.content {
+.content-area {
   flex: 1;
-  padding: 24px;
+  padding: 32px;
+  background: #f8fafc;
+  overflow-y: auto;
 }
 
-@media (max-width: 768px) {
-  .main-container {
+/* Mobile adjustment */
+@media (max-width: 992px) {
+  .main-area {
     flex-direction: column;
   }
   .sidebar {
     width: 100%;
+    height: auto;
     border-right: none;
-    border-bottom: 1px solid #eee;
-    padding: 16px;
-  }
-  .sidebar ul {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
+    border-bottom: 1px solid #e2e8f0;
   }
 }
