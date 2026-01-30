@@ -139,7 +139,14 @@ function Dashboard() {
                       {openDropdownId === user.id && (
                         <div className="dropdown-menu">
                           <button className="dropdown-item">
-                            <FiEye size={18} /> View Details
+                           
+                            <Link
+  to={`/users/${user.id}`}   
+  className="dropdown-item view"
+  onClick={() => setOpenDropdownId(null)}
+>
+  <FiEye size={18} /> View Details
+</Link>
                           </button>
                           <button className="dropdown-item blacklist">
                             <FiUserX size={18} /> Blacklist User

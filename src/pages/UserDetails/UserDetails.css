@@ -7,8 +7,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  flex-wrap: wrap;
-  gap: 16px;
+  max-width: 75%;
+  /* flex-wrap: wrap; */
 }
 
 .back-link {
@@ -22,7 +22,7 @@
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .blacklist-btn {
