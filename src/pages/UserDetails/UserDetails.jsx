@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import './UserDetails.css';
 
-const API_USERS = 'https://47162d2b44164d148856160628d20b2e.api.mockbin.io/';
+const API_USERS = 'https://b153a15f478d47af8acfb424fb0da442.api.mockbin.io/';
 
 function UserDetails() {
   const { id } = useParams();

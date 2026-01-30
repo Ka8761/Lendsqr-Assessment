@@ -4,7 +4,7 @@ import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-ico
 import FilterPopover from '../../components/FilterContainer/FilterContainer';
 import './Users.css';
 
-const API_USERS = 'https://47162d2b44164d148856160628d20b2e.api.mockbin.io/';
+const API_USERS = 'https://b153a15f478d47af8acfb424fb0da442.api.mockbin.io/';
 const ITEMS_PER_PAGE = 20;
 
 function Users() {
