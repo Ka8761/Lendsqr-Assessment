@@ -1,0 +1,62 @@
+.users-page h1 {
+  font-size: 28px;
+  margin-bottom: 32px;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.active { background: #e0f7e9; color: #0f9d58; }
+.status.inactive { background: #f1f5f9; color: #64748b; }
+.status.pending { background: #fef3c7; color: #d97706; }
+.status.blacklisted { background: #fee2e2; color: #dc2626; }
+
+.view-details {
+  color: #39cd62;
+  font-weight: 500;
+}
+
+.pagination {
+  margin-top: 24px;
+  text-align: center;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px;
+  }
+}

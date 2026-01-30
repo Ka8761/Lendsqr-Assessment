@@ -1,0 +1,147 @@
+.user-details {
+  max-width: 1200px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header h1 {
+  font-size: 28px;
+}
+
+.actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-left: 12px;
+}
+
+.blacklist {
+  background: #e0245e;
+  color: white;
+}
+
+.activate {
+  background: #39cd62;
+  color: white;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.info h2 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.info p {
+  color: #64748b;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+.detail-item label {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.tier {
+  font-size: 24px;
+  color: #f59e0b;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #64748b;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab.active {
+  color: #39cd62;
+  border-bottom: 3px solid #39cd62;
+  font-weight: 600;
+}
+
+.section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.section h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px 24px;
+}
+
+.grid-4 label {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.grid-4 p {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .grid-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .profile-top {
+    flex-direction: column;
+    text-align: center;
+  }
+}
