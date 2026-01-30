@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import './NotFound.css';
+import './NotFound.scss';
 
-function NotFound() {
+const NotFound: React.FC = () => {
   return (
     <div className="not-found-container">
       <div className="not-found-content">
@@ -16,6 +16,6 @@ function NotFound() {
       </div>
     </div>
   );
-}
+};
 
 export default NotFound;

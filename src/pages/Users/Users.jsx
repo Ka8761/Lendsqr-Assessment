@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-icons/fi';
-import StatCard from '../../components/StatCard/StatCard';
 import FilterPopover from '../../components/FilterContainer/FilterContainer';
-import './Dashboard.css';
+import './Users.css';
 
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
 const ITEMS_PER_PAGE = 20;
 
-function Dashboard() {
+function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,15 +46,10 @@ function Dashboard() {
 
   const uniqueOrganizations = [...new Set(users.map(u => u.organization || '').filter(Boolean))];
 
-  const applyFilters = (newFilters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
-  };
-
   const filteredUsers = users.filter(user => {
     const matchesOrg = !filters.organization || user.organization === filters.organization;
-    const matchesUsername = !filters.username || user.username?.toLowerCase().includes(filters.username?.toLowerCase());
-    const matchesEmail = !filters.email || user.email?.toLowerCase().includes(filters.email?.toLowerCase());
+    const matchesUsername = !filters.username || user.username?.toLowerCase().includes(filters.username.toLowerCase());
+    const matchesEmail = !filters.email || user.email?.toLowerCase().includes(filters.email.toLowerCase());
     const matchesPhone = !filters.phone || user.phoneNumber?.includes(filters.phone);
     const matchesDate = !filters.date || user.dateJoined?.includes(filters.date);
     const matchesStatus = !filters.status || user.status === filters.status;
@@ -86,9 +80,7 @@ function Dashboard() {
   if (loading) return <div className="loading">Loading users...</div>;
 
   return (
-    <div className="dashboard">
-      <StatCard />
-
+    <div className="users-page">
       <h1>Users</h1>
 
       <div className="table-wrapper">
@@ -127,27 +119,20 @@ function Dashboard() {
                     <td className="actions">
                       <button
                         className="dots-btn"
-                        onClick={(e) => {
-                       
-                          console.log('dot clicked')
-                          setOpenDropdownId(openDropdownId === user.id ? null : user.id);
-                        }}
+                        onClick={() => setOpenDropdownId(openDropdownId === user.id ? null : user.id)}
                       >
                         <FiMoreVertical size={20} />
                       </button>
 
                       {openDropdownId === user.id && (
                         <div className="dropdown-menu">
-                          <button className="dropdown-item">
-                           
-                            <Link
-  to={`/users/${user.id}`}   
-  className="dropdown-item view"
-  onClick={() => setOpenDropdownId(null)}
->
-  <FiEye size={18} /> View Details
-</Link>
-                          </button>
+                          <Link
+                            to={`/users/${user.id}`}
+                            className="dropdown-item view"
+                            onClick={() => setOpenDropdownId(null)}
+                          >
+                            <FiEye size={18} /> View Details
+                          </Link>
                           <button className="dropdown-item blacklist">
                             <FiUserX size={18} /> Blacklist User
                           </button>
@@ -220,4 +205,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Users;

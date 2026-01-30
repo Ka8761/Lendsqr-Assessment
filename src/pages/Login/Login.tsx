@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "./Login.scss";
 import imagebanner from "../../assets/loginimage.png";
 import logo from "../../assets/mainlogo.png";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     localStorage.setItem("authToken", "fake-jwt-token");
     navigate("/dashboard");
@@ -17,10 +18,10 @@ function Login() {
 
   return (
     <div className="login-page">
-        <div className="logo">
-          <img src={logo} alt="Lendsqr Logo" />
-        </div>
-  
+      <div className="logo">
+        <img src={logo} alt="Lendsqr Logo" />
+      </div>
+
       <div className="login-image-section">
         <img
           src={imagebanner}
@@ -29,10 +30,7 @@ function Login() {
         />
       </div>
 
-
       <div className="login-form-section">
-    
-
         <div className="form-wrapper">
           <h1 className="welcome-text">Welcome!</h1>
           <p className="subtitle">Enter details to login.</p>
@@ -43,7 +41,9 @@ function Login() {
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
                 required
               />
             </div>
@@ -53,7 +53,9 @@ function Login() {
                 type="password"
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
                 required
               />
             </div>
@@ -66,6 +68,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

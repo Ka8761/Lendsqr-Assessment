@@ -2,20 +2,21 @@ import { useState } from 'react';
 import { FiSearch, FiBell } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import { Link } from 'react-router-dom';
+import { useSearch } from '../../context/SeachContext';
 import mainlogo from '../../assets/mainlogo.png';
 import profilepic from '../../assets/profilepic.png';
 import './Navbar.css';
 
 function Navbar({ onLogout }) {
+  const { searchQuery, setSearchQuery } = useSearch();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  
+  const [value, setValue] = useState('');
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    // You can pass this value to a context or parent to filter users
-    console.log('Searching for:', value);
+  const handleSearch = () => {
+    setSearchQuery(value.trim());
   };
+
 
   return (
     <header className="navbar">
@@ -27,10 +28,10 @@ function Navbar({ onLogout }) {
             type="text"
             placeholder="Search for anything"
             value={searchQuery}
-            onChange={handleSearch}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <button className="search-btn">
+          <button className="search-btn"onClick={handleSearch}>
             <FiSearch size={18} />
           </button>
         </div>
