@@ -8,6 +8,14 @@ import './Navbar.css';
 
 function Navbar({ onLogout }) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    // You can pass this value to a context or parent to filter users
+    console.log('Searching for:', value);
+  };
 
   return (
     <header className="navbar">
@@ -18,6 +26,8 @@ function Navbar({ onLogout }) {
           <input
             type="text"
             placeholder="Search for anything"
+            value={searchQuery}
+            onChange={handleSearch}
             className="search-input"
           />
           <button className="search-btn">
@@ -27,9 +37,7 @@ function Navbar({ onLogout }) {
       </div>
 
       <div className="right-section">
-        <Link to="/" className="docs-link">
-          Docs
-        </Link>
+        <Link to="/" className="docs-link">Docs</Link>
 
         <button className="notification-btn">
           <FiBell size={20} />
@@ -40,11 +48,7 @@ function Navbar({ onLogout }) {
             className="profile-trigger"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <img
-              src={profilepic}
-              alt="Profile"
-              className="profile-pic"
-            />
+            <img src={profilepic} alt="Profile" className="profile-pic" />
             <span className="username">Adeyemi</span>
             <IoIosArrowDown size={16} className="dropdown-arrow" />
           </div>
