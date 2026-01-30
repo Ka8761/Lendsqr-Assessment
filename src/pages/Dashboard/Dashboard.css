@@ -1,8 +1,8 @@
-.users-page {
+.dashboard {
   padding: 20px;
 }
 
-.users-page h1 {
+.dashboard h1 {
   font-size: 26px;
   margin-bottom: 24px;
   color: #0f172a;
@@ -42,6 +42,7 @@ th {
   color: #9ca3af;
   font-size: 12px;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .status-badge {
@@ -58,7 +59,9 @@ th {
 .status-badge.blacklisted { background: #fee2e2; color: #991b1b; }
 
 .actions {
-  width: 48px;
+  position: relative;
+  width: 50px;
+  overflow: visible !important;
   text-align: center;
 }
 
@@ -67,25 +70,25 @@ th {
   border: none;
   padding: 6px;
   cursor: pointer;
-  border-radius: 4px;
   color: #6b7280;
 }
 
 .dots-btn:hover {
   background: #f3f4f6;
+  border-radius: 4px;
 }
 
-.dropdown {
+.dropdown-menu {
   position: absolute;
   right: 0;
   top: 100%;
-  margin-top: 4px;
+  margin-top: 6px;
   background: white;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
-  z-index: 100;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   min-width: 160px;
+  z-index: 999;
   padding: 6px 0;
 }
 
@@ -107,16 +110,12 @@ th {
   background: #f9fafb;
 }
 
-.dropdown-item.view {
-  color: #2563eb;
-}
-
 .dropdown-item.blacklist {
   color: #dc2626;
 }
 
-.dropdown-item.delete {
-  color: #991b1b;
+.dropdown-item.activate {
+  color: #16a34a;
 }
 
 .table-footer {

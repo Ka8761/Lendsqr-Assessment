@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-icons/fi';
 import StatCard from '../../components/StatCard/StatCard';
-import FilterContainer from '../../components/FilterContainer/FilterContainer';
+import FilterPopover from '../../components/FilterContainer/FilterContainer';
 import './Dashboard.css';
 
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
@@ -128,7 +128,8 @@ function Dashboard() {
                       <button
                         className="dots-btn"
                         onClick={(e) => {
-                          e.stopPropagation();
+                       
+                          console.log('dot clicked')
                           setOpenDropdownId(openDropdownId === user.id ? null : user.id);
                         }}
                       >
@@ -136,14 +137,10 @@ function Dashboard() {
                       </button>
 
                       {openDropdownId === user.id && (
-                        <div className="dropdown" ref={dropdownRef}>
-                          <Link
-                            to={`/users/${user.id}`}
-                            className="dropdown-item view"
-                            onClick={() => setOpenDropdownId(null)}
-                          >
+                        <div className="dropdown-menu">
+                          <button className="dropdown-item">
                             <FiEye size={18} /> View Details
-                          </Link>
+                          </button>
                           <button className="dropdown-item blacklist">
                             <FiUserX size={18} /> Blacklist User
                           </button>
@@ -162,7 +159,7 @@ function Dashboard() {
       </div>
 
       {showFilter && (
-        <FilterContainer
+        <FilterPopover
           onClose={() => setShowFilter(false)}
           onFilter={(newFilters) => {
             setFilters(newFilters);

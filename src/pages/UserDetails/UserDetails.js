@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
+import { FiArrowLeft } from 'react-icons/fi';
 import './UserDetails.css';
 
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
@@ -10,20 +11,12 @@ function UserDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const cached = localStorage.getItem(`user_${id}`);
+    const cached = localStorage.getItem('allUsers');
     if (cached) {
-      setUser(JSON.parse(cached));
-      setLoading(false);
-      return;
-    }
-
-    const allUsers = localStorage.getItem('allUsers');
-    if (allUsers) {
-      const users = JSON.parse(allUsers);
-      const found = users.find(u => u.id === id);
+      const allUsers = JSON.parse(cached);
+      const found = allUsers.find(u => u.id === id);
       if (found) {
         setUser(found);
-        localStorage.setItem(`user_${id}`, JSON.stringify(found));
         setLoading(false);
         return;
       }
@@ -46,34 +39,41 @@ function UserDetails() {
   if (!user) return <div className="not-found">User not found</div>;
 
   return (
-    <div className="user-details">
-      <div className="header">
-        <h1>User Details</h1>
+    <div className="user-details-page">
+      <div className="top-bar">
+        <Link to="/users" className="back-link">
+          <FiArrowLeft size={20} /> Back to Users
+        </Link>
+
         <div className="actions">
-          <button className="blacklist">BLACKLIST USER</button>
-          <button className="activate">ACTIVATE USER</button>
+          <button className="blacklist-btn">BLACKLIST USER</button>
+          <button className="activate-btn">ACTIVATE USER</button>
         </div>
       </div>
 
       <div className="profile-card">
-        <div className="profile-top">
+        <div className="profile-left">
           <div className="avatar">
-            <img src={user.avatar || `https://i.pravatar.cc/150?u=${user.id}`} alt="" />
+            <img src={user.avatar || `https://i.pravatar.cc/150?u=${user.id}`} alt={user.fullName} />
           </div>
-          <div className="info">
+          <div className="name-section">
             <h2>{user.fullName || user.username}</h2>
-            <p>{user.organization}</p>
+            <p className="user-id">{user.id}</p>
           </div>
         </div>
 
-        <div className="details-grid">
-          <div className="detail-item">
-            <label>USER'S TIER</label>
-            <div className="tier">★★★</div>
+        <div className="profile-right">
+          <div className="tier-section">
+            <div className="tier-label">User's Tier</div>
+            <div className="stars">★★★</div>
           </div>
-          <div className="detail-item">
-            <label>LOAN BALANCE</label>
-            <p>N200,000.00</p>
+          <div className="loan-section">
+            <div className="amount">N200,000.00</div>
+            <div className="account-info">
+              <div>Account Number</div>
+              <div>LSQF5878P0</div>
+            </div>
+            <div className="bank-name">Providus Bank</div>
           </div>
         </div>
       </div>
@@ -84,86 +84,57 @@ function UserDetails() {
         <button className="tab">Bank Details</button>
         <button className="tab">Loans</button>
         <button className="tab">Savings</button>
+        <button className="tab">App and System</button>
       </div>
 
-      <div className="section">
-        <h3>Personal Information</h3>
-        <div className="grid-4">
-          <div>
-            <label>FULL NAME</label>
-            <p>{user.fullName || user.username}</p>
+      <div className="details-section">
+        <div className="section">
+          <h3>Personal Information</h3>
+          <div className="info-grid">
+            <div><strong>Full Name:</strong> {user.fullName || 'N/A'}</div>
+            <div><strong>Phone Number:</strong> {user.phoneNumber || 'N/A'}</div>
+            <div><strong>Email Address:</strong> {user.email || 'N/A'}</div>
+            <div><strong>BVN:</strong> {user.bvn || 'N/A'}</div>
+            <div><strong>Gender:</strong> {user.gender || 'N/A'}</div>
           </div>
-          <div>
-            <label>PHONE NUMBER</label>
-            <p>{user.phoneNumber}</p>
-          </div>
-          <div>
-            <label>EMAIL ADDRESS</label>
-            <p>{user.email}</p>
-          </div>
-          <div>
-            <label>BVN</label>
-            <p>{user.bvn || 'N/A'}</p>
-          </div>
-          <div>
-            <label>GENDER</label>
-            <p>{user.gender || 'N/A'}</p>
-          </div>
-          <div>
-            <label>MARITAL STATUS</label>
-            <p>{user.maritalStatus || 'N/A'}</p>
-          </div>
-          <div>
-            <label>CHILDREN</label>
-            <p>{user.children || 0}</p>
-          </div>
-          <div>
-            <label>TYPE OF RESIDENCE</label>
-            <p>{user.residence || 'N/A'}</p>
+          <div className="info-grid">
+            <div><strong>Marital Status:</strong> {user.maritalStatus || 'N/A'}</div>
+            <div><strong>Children:</strong> {user.children || '0'}</div>
+            <div><strong>Type of Residence:</strong> {user.residence || 'N/A'}</div>
           </div>
         </div>
-      </div>
 
-      <div className="section">
-        <h3>Education and Employment</h3>
-        <div className="grid-4">
-          <div>
-            <label>LEVEL OF EDUCATION</label>
-            <p>{user.levelOfEducation || 'N/A'}</p>
+        <div className="section">
+          <h3>Education and Employment</h3>
+          <div className="info-grid">
+            <div><strong>Level of Education:</strong> {user.levelOfEducation || 'N/A'}</div>
+            <div><strong>Employment Status:</strong> {user.employmentStatus || 'N/A'}</div>
+            <div><strong>Sector of Employment:</strong> {user.sector || 'N/A'}</div>
+            <div><strong>Duration of Employment:</strong> {user.duration || 'N/A'}</div>
           </div>
-          <div>
-            <label>EMPLOYMENT STATUS</label>
-            <p>{user.employmentStatus || 'N/A'}</p>
-          </div>
-          <div>
-            <label>SECTOR OF EMPLOYMENT</label>
-            <p>{user.sector || 'N/A'}</p>
-          </div>
-          <div>
-            <label>DURATION OF EMPLOYMENT</label>
-            <p>{user.duration || 'N/A'}</p>
+          <div className="info-grid">
+            <div><strong>Office Email:</strong> {user.officeEmail || 'N/A'}</div>
+            <div><strong>Monthly Income:</strong> {user.monthlyIncome || 'N/A'}</div>
+            <div><strong>Loan Repayment:</strong> {user.loanRepayment || 'N/A'}</div>
           </div>
         </div>
-      </div>
 
-      <div className="section">
-        <h3>Guarantor</h3>
-        <div className="grid-4">
-          <div>
-            <label>FULL NAME</label>
-            <p>{user.guarantorFullName || 'N/A'}</p>
+        <div className="section">
+          <h3>Socials</h3>
+          <div className="info-grid">
+            <div><strong>Twitter:</strong> {user.twitter || 'N/A'}</div>
+            <div><strong>Facebook:</strong> {user.facebook || 'N/A'}</div>
+            <div><strong>Instagram:</strong> {user.instagram || 'N/A'}</div>
           </div>
-          <div>
-            <label>PHONE NUMBER</label>
-            <p>{user.guarantorPhone || 'N/A'}</p>
-          </div>
-          <div>
-            <label>EMAIL ADDRESS</label>
-            <p>{user.guarantorEmail || 'N/A'}</p>
-          </div>
-          <div>
-            <label>RELATIONSHIP</label>
-            <p>{user.guarantorRelationship || 'N/A'}</p>
+        </div>
+
+        <div className="section">
+          <h3>Guarantor</h3>
+          <div className="info-grid">
+            <div><strong>Full Name:</strong> {user.guarantorFullName || 'N/A'}</div>
+            <div><strong>Phone Number:</strong> {user.guarantorPhone || 'N/A'}</div>
+            <div><strong>Email Address:</strong> {user.guarantorEmail || 'N/A'}</div>
+            <div><strong>Relationship:</strong> {user.guarantorRelationship || 'N/A'}</div>
           </div>
         </div>
       </div>
