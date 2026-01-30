@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { FiFilter, FiMoreVertical, FiEye, FiUserX, FiUserCheck } from 'react-icons/fi';
 import StatCard from '../../components/StatCard/StatCard';
-import { FiFilter, FiMoreVertical, FiEye, FiSlash, FiTrash2 } from 'react-icons/fi';
+import FilterPopover from '../../components/FilterContainer/FilterContainer.js';
 import './Dashboard.css';
 
 const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
@@ -11,8 +12,9 @@ function Dashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showFilter, setShowFilter] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [showFilter, setShowFilter] = useState(false);
+  const [filters, setFilters] = useState({});
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -43,10 +45,27 @@ function Dashboard() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
+  const uniqueOrganizations = [...new Set(users.map(u => u.organization || '').filter(Boolean))];
+
+  const applyFilters = (newFilters) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
+
+  const filteredUsers = users.filter(user => {
+    const matchesOrg = !filters.organization || user.organization === filters.organization;
+    const matchesUsername = !filters.username || user.username?.toLowerCase().includes(filters.username?.toLowerCase());
+    const matchesEmail = !filters.email || user.email?.toLowerCase().includes(filters.email?.toLowerCase());
+    const matchesPhone = !filters.phone || user.phoneNumber?.includes(filters.phone);
+    const matchesDate = !filters.date || user.dateJoined?.includes(filters.date);
+    const matchesStatus = !filters.status || user.status === filters.status;
+    return matchesOrg && matchesUsername && matchesEmail && matchesPhone && matchesDate && matchesStatus;
+  });
+
+  const totalPages = Math.ceil(filteredUsers.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, users.length);
-  const paginatedUsers = users.slice(startIndex, endIndex);
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredUsers.length);
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -67,8 +86,8 @@ function Dashboard() {
   if (loading) return <div className="loading">Loading users...</div>;
 
   return (
-    <div className="users-page">
-      <StatCard/>
+    <div className="dashboard">
+      <StatCard />
 
       <h1>Users</h1>
 
@@ -76,12 +95,12 @@ function Dashboard() {
         <table className="users-table">
           <thead>
             <tr>
-              <th>ORGANIZATION <FiFilter className="filter-icon" /></th>
-              <th>USERNAME <FiFilter className="filter-icon" /></th>
-              <th>EMAIL <FiFilter className="filter-icon" /></th>
-              <th>PHONE <FiFilter className="filter-icon" /></th>
-              <th>DATE JOINED <FiFilter className="filter-icon" /></th>
-              <th>STATUS <FiFilter className="filter-icon" /></th>
+              <th>ORGANIZATION <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
+              <th>USERNAME <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
+              <th>EMAIL <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
+              <th>PHONE NUMBER <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
+              <th>DATE JOINED <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
+              <th>STATUS <FiFilter className="filter-icon" onClick={() => setShowFilter(!showFilter)} /></th>
               <th></th>
             </tr>
           </thead>
@@ -123,13 +142,13 @@ function Dashboard() {
                             className="dropdown-item view"
                             onClick={() => setOpenDropdownId(null)}
                           >
-                            <FiEye size={16} /> View Details
+                            <FiEye size={18} /> View Details
                           </Link>
                           <button className="dropdown-item blacklist">
-                            <FiSlash size={16} /> Blacklist User
+                            <FiUserX size={18} /> Blacklist User
                           </button>
-                          <button className="dropdown-item delete">
-                            <FiTrash2 size={16} /> Delete User
+                          <button className="dropdown-item activate">
+                            <FiUserCheck size={18} /> Activate User
                           </button>
                         </div>
                       )}
@@ -142,10 +161,21 @@ function Dashboard() {
         </table>
       </div>
 
-      {users.length > 0 && (
+      {showFilter && (
+        <FilterPopover
+          onClose={() => setShowFilter(false)}
+          onFilter={(newFilters) => {
+            setFilters(newFilters);
+            setCurrentPage(1);
+          }}
+          organizations={uniqueOrganizations}
+        />
+      )}
+
+      {filteredUsers.length > 0 && (
         <div className="table-footer">
           <div className="showing">
-            Showing {startIndex + 1}–{endIndex} out of {users.length}
+            Showing {startIndex + 1}–{endIndex} out of {filteredUsers.length}
           </div>
 
           <div className="pagination">

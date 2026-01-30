@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import imagebanner from "../../assets/images/loginimage.png";
+import imagebanner from "../../assets/loginimage.png";
 
 function Login() {
   const [email, setEmail] = useState("");

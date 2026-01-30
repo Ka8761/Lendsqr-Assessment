@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { FiCalendar } from 'react-icons/fi';
-import './FilterPopover.css';
+import './FilterContainer.css';
 
-function FilterContainer({ onClose, onFilter }) {
+function FilterPopover({ onClose, onFilter, organizations }) {
   const [organization, setOrganization] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [status, setStatus] = useState('');
-
-  // Extract unique organizations from mock data (you can make this dynamic)
-  const organizations = ['Lendsqr', 'Lendstar', 'Irorun', 'Karma', 'Whitelsit'];
 
   const handleReset = () => {
     setOrganization('');
@@ -88,4 +85,4 @@ function FilterContainer({ onClose, onFilter }) {
   );
 }
 
-export default FilterContainer;
+export default FilterPopover;
