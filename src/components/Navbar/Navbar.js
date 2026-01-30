@@ -11,11 +11,11 @@ function Navbar({ onLogout }) {
   const { searchQuery, setSearchQuery } = useSearch();
   const [showDropdown, setShowDropdown] = useState(false);
   
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
 
-  const handleSearch = () => {
-    setSearchQuery(value.trim());
-  };
+  // const handleSearch = () => {
+  //   setSearchQuery(value.trim());
+  // };
 
 
   return (
@@ -31,7 +31,7 @@ function Navbar({ onLogout }) {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <button className="search-btn"onClick={handleSearch}>
+          <button className="search-btn">
             <FiSearch size={18} />
           </button>
         </div>
