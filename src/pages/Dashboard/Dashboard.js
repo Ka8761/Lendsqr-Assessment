@@ -1,46 +1,18 @@
-import { useState, useEffect } from 'react';
-import { FiFilter } from 'react-icons/fi';
-
-// Import different images for each card
-import usersIcon from '../../assets/users.png';
-import activeUsersIcon from '../../assets/active.png';
-import loanUsersIcon from '../../assets/loans.png';
-import savingsUsersIcon from '../../assets/savings.png';
-
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import StatCard from '../../components/StatCard/StatCard';
+import { FiFilter, FiMoreVertical, FiEye, FiSlash, FiTrash2 } from 'react-icons/fi';
 import './Dashboard.css';
 
-const API_USERS = 'https://47162d2b44164d148856160628d20b2e.api.mockbin.io/';
+const API_USERS = 'https://mockbin.io/bins/47162d2b44164d148856160628d20b2e';
+const ITEMS_PER_PAGE = 20;
 
-function Dashboard() {
+function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const stats = [
-    {
-      count: '2,453',
-      label: 'USERS',
-      desc: 'USERS',
-      image: usersIcon,
-    },
-    {
-      count: '2,453',
-      label: 'ACTIVE USERS',
-      desc: 'ACTIVE USERS',
-      image: activeUsersIcon,
-    },
-    {
-      count: '12,453',
-      label: 'USERS WITH LOANS',
-      desc: 'USERS WITH LOANS',
-      image: loanUsersIcon,
-    },
-    {
-      count: '102,453',
-      label: 'USERS WITH SAVINGS',
-      desc: 'USERS WITH SAVINGS',
-      image: savingsUsersIcon,
-    },
-  ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const cached = localStorage.getItem('allUsers');
@@ -51,83 +23,166 @@ function Dashboard() {
     }
 
     fetch(API_USERS)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         setUsers(data);
         localStorage.setItem('allUsers', JSON.stringify(data));
         setLoading(false);
       })
-      .catch((err) => {
-        console.error('Error fetching users:', err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, users.length);
+  const paginatedUsers = users.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      setOpenDropdownId(null);
+    }
+  };
+
+  const getStatusStyle = (status) => {
+    const lower = (status || '').toLowerCase();
+    if (lower === 'active') return { class: 'active', text: 'Active' };
+    if (lower === 'inactive') return { class: 'inactive', text: 'Inactive' };
+    if (lower === 'pending') return { class: 'pending', text: 'Pending' };
+    if (lower === 'blacklisted') return { class: 'blacklisted', text: 'Blacklisted' };
+    return { class: '', text: status || 'N/A' };
+  };
+
+  if (loading) return <div className="loading">Loading users...</div>;
+
   return (
-    <div className="dashboard">
-      <h1>Dashboard</h1>
+    <div className="users-page">
+      <StatCard/>
+      
+      <h1>Users</h1>
 
-      <div className="stats-row">
-        {stats.map((stat, index) => (
-          <div key={index} className="stat-card">
-            <img
-              src={stat.image}
-              alt={`${stat.label} icon`}
-              className="stat-image"
-            />
-            {/* <div className="stat-label">{stat.label.split(' ')[0]}</div> */}
-            <h3>{stat.count}</h3>
-            <p>{stat.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="recent-users">
-        <h2>Recent Users</h2>
-
-        {loading ? (
-          <p>Loading users...</p>
-        ) : users.length === 0 ? (
-          <p>No users found</p>
-        ) : (
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>
-                    ORGANIZATION <FiFilter className="filter-icon" />
-                  </th>
-                  <th>
-                    USERNAME <FiFilter className="filter-icon" />
-                  </th>
-                  <th>
-                    EMAIL <FiFilter className="filter-icon" />
-                  </th>
-                  <th>
-                    PHONE NUMBER <FiFilter className="filter-icon" />
-                  </th>
-                  <th>
-                    DATE JOINED <FiFilter className="filter-icon" />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.slice(0, 10).map((user) => (
+      <div className="table-wrapper">
+        <table className="users-table">
+          <thead>
+            <tr>
+              <th>ORGANIZATION <FiFilter className="filter-icon" /></th>
+              <th>USERNAME <FiFilter className="filter-icon" /></th>
+              <th>EMAIL <FiFilter className="filter-icon" /></th>
+              <th>PHONE <FiFilter className="filter-icon" /></th>
+              <th>DATE JOINED <FiFilter className="filter-icon" /></th>
+              <th>STATUS <FiFilter className="filter-icon" /></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedUsers.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="no-results">No users found</td>
+              </tr>
+            ) : (
+              paginatedUsers.map(user => {
+                const statusInfo = getStatusStyle(user.status);
+                return (
                   <tr key={user.id}>
                     <td>{user.organization || 'N/A'}</td>
-                    <td>{user.firstname || 'N/A'}</td>
+                    <td>{user.username || 'N/A'}</td>
                     <td>{user.email || 'N/A'}</td>
                     <td>{user.phoneNumber || 'N/A'}</td>
                     <td>{user.dateJoined || 'N/A'}</td>
+                    <td>
+                      <span className={`status-badge ${statusInfo.class}`}>
+                        {statusInfo.text}
+                      </span>
+                    </td>
+                    <td className="actions">
+                      <button
+                        className="dots-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenDropdownId(openDropdownId === user.id ? null : user.id);
+                        }}
+                      >
+                        <FiMoreVertical size={20} />
+                      </button>
+
+                      {openDropdownId === user.id && (
+                        <div className="dropdown" ref={dropdownRef}>
+                          <Link
+                            to={`/users/${user.id}`}
+                            className="dropdown-item view"
+                            onClick={() => setOpenDropdownId(null)}
+                          >
+                            <FiEye size={16} /> View Details
+                          </Link>
+                          <button className="dropdown-item blacklist">
+                            <FiSlash size={16} /> Blacklist User
+                          </button>
+                          <button className="dropdown-item delete">
+                            <FiTrash2 size={16} /> Delete User
+                          </button>
+                        </div>
+                      )}
+                    </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                );
+              })
+            )}
+          </tbody>
+        </table>
       </div>
+
+      {users.length > 0 && (
+        <div className="table-footer">
+          <div className="showing">
+            Showing {startIndex + 1}–{endIndex} out of {users.length}
+          </div>
+
+          <div className="pagination">
+            <button
+              className="page-arrow"
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              ←
+            </button>
+
+            {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+              const page = i + 1;
+              return (
+                <button
+                  key={page}
+                  className={`page-number ${currentPage === page ? 'active' : ''}`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            {totalPages > 7 && <span className="ellipsis">...</span>}
+
+            <button
+              className="page-arrow"
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Dashboard;
+export default Users;
